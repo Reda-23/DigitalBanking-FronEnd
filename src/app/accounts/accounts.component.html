@@ -1,0 +1,87 @@
+<div class="container mt-4">
+  <div class="row">
+  <div class="col col-md-6">
+    <form [formGroup]="searchOperationForm" (ngSubmit)="searchAccountOperations()">
+      <div class="input-group">
+        <label class="input-group-text">Account ID :</label>
+        <input formControlName="accountId" type="text">
+        <button class="btn btn-info">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </form>
+    <div class="m-2">
+      <label >ACCOUNT_ID :</label>
+      <label><strong> {{bankAccount.accountId}}</strong></label>
+    </div>
+    <div class="m-2">
+      <label>BALANCE :</label>
+      <label><strong> {{bankAccount.balance | number : '1.2-2'}}</strong></label>
+    </div>
+    <table class="table mt-4">
+      <thead >
+      <tr>
+        <th>ID</th>
+        <th>DATE</th>
+        <th>AMOUNT</th>
+        <th>TYPE</th>
+      </tr>
+      </thead>
+      <tbody >
+      <tr *ngFor="let ba of bankAccount.operationDTOS">
+        <td>{{ba.id}}</td>
+        <td>{{ba.date | date : 'dd-MM-YYYY'}}</td>
+        <td>{{ba.amount | number : '1.2-2'}}</td>
+        <td>{{ba.type}}</td>
+      </tr>
+
+      </tbody>
+    </table>
+
+    <ul class="nav nav-pills m-3">
+      <li *ngFor="let pag of [].constructor(bankAccount.totalPages) ; let p=index">
+        <a  ><button (click)="goToPage(p)" class="btn m-2" [ngClass]="p == page ?' btn-info':' btn-outline-info'" >{{p}}</button></a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col col-md-6">
+    <div class="card" *ngIf="bankAccount">
+      <div class="card-header">Operations</div>
+      <div class="card-body">
+        <form *ngIf="login.roles.includes('ADMIN')" [formGroup]="operationForm" method="post" (ngSubmit)="performOperation()">
+          <div  class="form-check form-check-inline">
+            <label class="form-check-label">CREDIT</label>
+            <input name="type" type="radio" formControlName="type" class="form-check-input" value="CREDIT" >
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label" >DEBIT</label>
+            <input name="type" formControlName="type" type="radio" class="form-check-input" value="DEBIT">
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label" >TRANSFER</label>
+            <input name="type" formControlName="type" type="radio" class="form-check-input" value="TRANSFER">
+          </div>
+
+          <div class="mb-3">
+            <div class="mb-3" *ngIf="operationForm.value.type == 'TRANSFER'">
+              <label class="form-label">ACCOUNT DESTINATION :</label>
+              <input type="text" formControlName="idDestination" class="form-control">
+            </div>
+            <label class="form-label">AMOUNT :</label>
+            <input type="text" formControlName="amount" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">DESCRIPTION :</label>
+            <input type="text" formControlName="description" class="form-control">
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-success">Confirm Operation</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>

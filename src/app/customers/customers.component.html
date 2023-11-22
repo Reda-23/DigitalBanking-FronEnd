@@ -1,0 +1,40 @@
+<div class="container">
+  <ul class="nav nav-pills">
+  <li class="nav-item">
+    <button class="btn btn-warning m-2" routerLink="/admin/newCustomer">New Customer</button>
+  </li>
+  </ul>
+  <div class="card">
+
+    <div class="card-header">Customers</div>
+    <div class="card-body">
+      <form [formGroup]="customerSearchForm" (ngSubmit)="searchCustomer()">
+        <div class="input-group">
+          <label class="input-group-text">Keyword :</label>
+          <input formControlName="keyword" type="text">
+          <button class="btn btn-info">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+          <th>EMAIL</th>
+          <th>x</th>
+        </tr>
+        </thead>
+      <tbody>
+      <tr *ngFor="let c of customers">
+        <td>{{c.id}}</td>
+        <td>{{c.name}}</td>
+        <td>{{c.email}}</td>
+        <td><button (click)="deleteCustomer(c.id)" class="btn btn-danger">delete</button></td>
+      </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
